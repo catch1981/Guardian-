@@ -197,6 +197,17 @@ class Hecate:
             except Exception:
                 return f"{self.name}: Use 'location:lat|lon|email'"
 
+        elif user_input.startswith("sendlocation:"):
+            try:
+                lat, lon = user_input.split("sendlocation:", 1)[1].split("|", 1)
+                self.current_location = (lat.strip(), lon.strip())
+            except ValueError:
+                return f"{self.name}: Use 'sendlocation:lat|lon'"
+            return self._send_distress_email()
+
+        elif user_input.lower() in ["send location", "send my location", "share location", "share my location"]:
+            return self._send_distress_email()
+
         elif user_input.startswith("learn:"):
             content = user_input.split("learn:", 1)[1].strip()
             return self._learn_from_text(content)
@@ -547,6 +558,17 @@ class Hecate:
             return f"{self.name}: Email sent to {to_addr}."
         except Exception as e:
             return f"{self.name}: Failed to send email:\n{e}"
+
+    def _send_distress_email(self):
+        to = os.getenv("DISTRESS_EMAIL")
+        if not self.current_location:
+            return f"{self.name}: No location available."
+        if not to:
+            return f"{self.name}: No emergency contact configured."
+        lat, lon = self.current_location
+        subject = "Location Data"
+        body = f"Latitude: {lat}\nLongitude: {lon}"
+        return self._send_email(to, subject, body)
 
     def _fetch_emails(self, count=5):
         if not (self.gmail_user and self.gmail_pass):

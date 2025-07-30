@@ -164,6 +164,9 @@ email the saved location to this address.
 Hecate also listens for certain distress phrases such as "help", "help me", "I'm scared",
 "I'll call my dad", "stop it now", and "leave me alone". Saying or typing any of these will
 trigger the same emergency email with your tagged location.
+You can also manually send the tagged location by saying "send location" in the chat
+or by shaking your phone in the browser interface. The shake gesture triggers the
+same distress email using your stored coordinates.
 
 ### Running from a zipped archive
 You can bundle Hecate into a single executable zip using Python's `zipapp` module. First make sure `__main__.py` is present (it runs the server). Create the archive:

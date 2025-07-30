@@ -174,6 +174,24 @@
     appendReply(message, reply);
   }
 
+  async function sendDistressLocation() {
+    if (!currentLocation) {
+      alert("No location captured yet.");
+      return;
+    }
+    const message = `sendlocation:${currentLocation.latitude}|${currentLocation.longitude}`;
+    const res = await fetch("http://localhost:8080/talk", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ message })
+    });
+    const data = await res.json();
+    const reply = data.reply;
+    document.getElementById("response").innerText = reply;
+    speak(reply);
+    appendReply("sendlocation", reply);
+  }
+
   async function summarizeMemory() {
     const res = await fetch("http://localhost:8080/talk", {
       method: "POST",
@@ -222,6 +240,19 @@
     }
     window.addEventListener('DOMContentLoaded', () => {
       getLocation();
+      let lastShake = 0;
+      window.addEventListener('devicemotion', e => {
+        const acc = e.accelerationIncludingGravity;
+        if (!acc) return;
+        const mag = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+        if (mag > 25) {
+          const now = Date.now();
+          if (now - lastShake > 1000) {
+            lastShake = now;
+            sendDistressLocation();
+          }
+        }
+      });
       fetch('http://localhost:8080/talk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
