@@ -1,0 +1,12 @@
+{
+  "name": "mandemos-clone",
+  "version": "1.0.0",
+  "description": "MandemOS Universal Clone",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

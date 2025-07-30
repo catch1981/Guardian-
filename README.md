@@ -212,3 +212,24 @@ python insert_metadata.py
 
 This inserts the scroll information from `metadata.json` into the `scrolls` table.
 
+### MandemOS Frontend
+The repository now includes a minimal Node.js front end located in
+`mandemos_frontend/`. It serves a simple status page for MandemOS and
+can be used alongside the Flask API.
+
+1. Install the dependencies:
+
+   ```bash
+   cd mandemos_frontend
+   npm install
+   ```
+
+2. Start the web server:
+
+   ```bash
+   npm start
+   ```
+
+   The page will be available at `http://localhost:3000` and should display
+   **"MandemOS Clone Active"**.
+
