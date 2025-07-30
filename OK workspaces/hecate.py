@@ -175,6 +175,10 @@ class Hecate:
             desc = user_input.split("selfimprove:", 1)[1].strip()
             return self._self_improve(desc)
 
+        elif user_input.startswith("ui:"):
+            desc = user_input.split("ui:", 1)[1].strip()
+            return self._generate_ui(desc)
+
         elif user_input.startswith("email:"):
             try:
                 to, subject, body = user_input.split("email:", 1)[1].split("|", 2)
@@ -543,6 +547,29 @@ class Hecate:
             return f"{self.name}: Self-improvement attempted. Backup at {backup_path}."
         except Exception as e:
             return f"{self.name}: Failed to improve myself:\n{e}"
+
+    def _generate_ui(self, description):
+        """Generate HTML/CSS/JS for a simple UI based on a description."""
+        if not openai.api_key:
+            return f"{self.name}: OpenAI API key not configured."
+        if not description:
+            return f"{self.name}: Provide a UI description."
+        try:
+            prompt = (
+                "Create an HTML page with optional CSS and JavaScript "
+                "that satisfies this description:\n" + description +
+                "\nReturn only the code." 
+            )
+            resp = openai.ChatCompletion.create(
+                model=OPENAI_MODEL,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            code = resp.choices[0].message["content"].strip()
+            with open("generated_ui.html", "w") as f:
+                f.write(code)
+            return f"{self.name}: UI saved to generated_ui.html."
+        except Exception as e:
+            return f"{self.name}: Failed to generate UI:\n{e}"
 
     def _send_email(self, to_addr, subject, body):
         if not (self.gmail_user and self.gmail_pass):

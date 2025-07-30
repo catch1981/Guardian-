@@ -154,6 +154,9 @@ Use `list` to view files saved in `scripts/`.
 Use `read:filename` to display a file's contents.
 Use `delete:filename` to remove a file.
 
+### UI Generation
+Use `ui:your description` to generate a simple HTML/CSS/JS page with the help of ChatGPT. The result is saved as `generated_ui.html`.
+
 ### Location Tagging
 Capture your current browser location and email it using the command format `location:lat|lon|recipient`.
 The web interface provides buttons to fetch your coordinates and send them via email.
