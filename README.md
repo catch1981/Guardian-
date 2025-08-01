@@ -190,6 +190,8 @@ This will start the API server directly from the zip file.
 ### Self Repair and Improvement
 Use `selfrepair:description` to attempt an automated fix of Hecate's own code based on the issue description. Similarly, `selfimprove:suggestion` asks Hecate to refactor itself with the provided suggestion. Both commands rely on your OpenAI API key and create a `.bak` backup of the current source before overwriting it if successful.
 
+You can also generate new scripts automatically using `selfcode:task|filename`. The task description is sent to ChatGPT and the resulting Python code is saved under `scripts/filename`.
+
 ### Self Improvement Lattice
 Hecate tracks ongoing improvements in a simple lattice stored in `lattice.json`.
 Use these commands to manage it:
