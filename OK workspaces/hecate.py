@@ -175,6 +175,12 @@ class Hecate:
             desc = user_input.split("selfimprove:", 1)[1].strip()
             return self._self_improve(desc)
 
+        elif user_input.startswith("selfcode:"):
+            parts = user_input.split("selfcode:", 1)[1].split("|", 1)
+            description = parts[0].strip()
+            filename = parts[1].strip() if len(parts) > 1 else "generated_code.py"
+            return self._self_generate_code(description, filename)
+
         elif user_input.startswith("ui:"):
             desc = user_input.split("ui:", 1)[1].strip()
             return self._generate_ui(desc)
@@ -547,6 +553,33 @@ class Hecate:
             return f"{self.name}: Self-improvement attempted. Backup at {backup_path}."
         except Exception as e:
             return f"{self.name}: Failed to improve myself:\n{e}"
+
+    def _self_generate_code(self, description, filename):
+        """Generate Python code for a task and save it to a file."""
+        if not openai.api_key:
+            return f"{self.name}: OpenAI API key not configured."
+        if not description:
+            return f"{self.name}: Provide a task description."
+        try:
+            prompt = (
+                "Write a complete Python script that accomplishes the following task: "
+                + description +
+                "\nReturn only the code."
+            )
+            resp = openai.ChatCompletion.create(
+                model=OPENAI_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            code = resp.choices[0].message["content"].strip()
+            path = os.path.join("scripts", filename)
+            with open(path, "w") as f:
+                f.write(code)
+            clean, msg = self._scan_file(path)
+            if not clean:
+                return f"{self.name}: {msg}"
+            return f"{self.name}: Generated code saved to {filename}."
+        except Exception as e:
+            return f"{self.name}: Failed to generate code:\n{e}"
 
     def _generate_ui(self, description):
         """Generate HTML/CSS/JS for a simple UI based on a description."""
