@@ -107,7 +107,9 @@ Both the CLI tools and the API server automatically read the key from these loca
    A health check endpoint is available at `http://localhost:8080/health`.
    Load balancers can poll this URL to verify the service is running.
 
-3. Open `index.html` in your browser. The page will communicate with the server running on `localhost:8080`.
+3. To automatically restart the server if it crashes, run `auto_restart.py` instead. It will relaunch the API whenever it exits with a non-zero status. Any additional arguments are passed through to `main.py`, e.g. `python auto_restart.py -b` to run in the background.
+
+4. Open `index.html` in your browser. The page will communicate with the server running on `localhost:8080`.
 
 ### Command Line Chat
 If you prefer to talk to Hecate directly in your terminal, run the small CLI utility:
