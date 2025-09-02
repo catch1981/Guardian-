@@ -2,3 +2,5 @@ __pycache__/
 openai_key.txt
 mandemos.db
 conversation.log
+mandemos_frontend/node_modules/
+mandemos_frontend/package-lock.json

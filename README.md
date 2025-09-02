@@ -236,3 +236,9 @@ can be used alongside the Flask API.
    The page will be available at `http://localhost:3000` and should display
    **"MandemOS Clone Active"**.
 
+### Chat UI
+For a simple ChatGPT-style interface that talks to the Hecate API, start the
+front-end server and then visit `http://localhost:3000/chat_ui.html` in your
+browser. The page sends messages to the `/talk` endpoint and displays the
+conversation in a familiar chat format.
+
